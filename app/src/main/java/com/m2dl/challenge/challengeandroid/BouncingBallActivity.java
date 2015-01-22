@@ -35,6 +35,7 @@ public class BouncingBallActivity extends Activity implements Callback, SensorLi
 	private SensorManager sensorMgr;
 	private long lastSensorUpdate = -1;
 
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
