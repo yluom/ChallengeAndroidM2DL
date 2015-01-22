@@ -21,25 +21,30 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 /**
  * This activity shows a ball that bounces around. The phone's 
  * accelerometer acts as gravity on the ball. When the ball hits
  * the edge, it bounces back and triggers the phone vibrator.
  */
-public class BouncingBallActivity extends Activity implements View.OnTouchListener, Callback, SensorListener {
+public class BouncingBallActivity extends Activity implements View.OnTouchListener,CompoundButton.OnCheckedChangeListener, Callback, SensorListener {
 	private static final int BALL_RADIUS = 20;
 	private SurfaceView surface;
 	private SurfaceHolder holder;
-	private final BouncingBallModel model = new BouncingBallModel(BALL_RADIUS);
+	private BouncingBallModel model;
 	private GameLoop gameLoop;
 	private Paint backgroundPaint;
 	private Paint ballPaint;
+    private Paint wallPaint;
 	private SensorManager sensorMgr;
 	private long lastSensorUpdate = -1;
 
     private PlateauModel plateauModel;
+    private EnumSurfaceType etat;
+    private ToggleButton outil;
 
 
 	@Override
@@ -63,7 +68,18 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 		ballPaint.setColor(Color.BLUE);
 		ballPaint.setAntiAlias(true);
 
+        wallPaint = new Paint();
+        wallPaint.setColor(Color.RED);
+
+
         this.plateauModel = new PlateauModel();
+        this.etat = EnumSurfaceType.MUR;
+
+        this.outil = (ToggleButton) findViewById(R.id.toggleButtonOutil);
+
+        this.outil.setOnCheckedChangeListener(this);
+
+        this.model  = new BouncingBallModel(BALL_RADIUS,this.plateauModel);
     }
     
 	@Override
@@ -149,7 +165,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
                 if(this.plateauModel.isAMur(i, j)){
                     int pixelX = i*50;
                     int pixelY = j*50;
-                    c.drawRect(pixelX,pixelY,pixelX+50,pixelY+50, ballPaint);
+                    c.drawRect(pixelX,pixelY,pixelX+50,pixelY+50, wallPaint);
                     //Log.e("Drawing", "Rectpix = " + pixelX +" / " +pixelY);
                 }
             }
@@ -167,9 +183,14 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        this.plateauModel.setSurface((int) event.getX(), (int) event.getY(), EnumSurfaceType.MUR);
+        this.plateauModel.setSurface((int) event.getX(), (int) event.getY(), this.etat);
         Log.e("TOuch ! ", " x = + " + (int) event.getX() + " y = " + (int) event.getY());
         return true;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        this.etat = (isChecked) ? EnumSurfaceType.VIDE : EnumSurfaceType.MUR;
     }
 
     private class GameLoop extends Thread {

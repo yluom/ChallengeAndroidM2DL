@@ -3,6 +3,7 @@ package com.m2dl.challenge.challengeandroid;
 import java.util.concurrent.atomic.AtomicReference;
 
 import android.os.Vibrator;
+import android.util.Log;
 
 /**
  * This data model tracks the width and height of the playing field along 
@@ -37,21 +38,24 @@ public class BouncingBallModel {
      * A value of 1.0 means the ball bounces with 100% efficiency. Lower
      * numbers simulate balls that don't bounce very much.
      */
-    private static final float rebound = 0.8f;
+    private static final float rebound = 0.4f;
 
     // if the ball bounces and the velocity is less than this constant,
     // stop bouncing.
-    private static final float STOP_BOUNCING_VELOCITY = 2f;
+    private static final float STOP_BOUNCING_VELOCITY = 1f;
 
     private volatile long lastTimeMs = -1;
 	
 	public final Object LOCK = new Object();
+
+    private PlateauModel plateauModel;
 	
 	private AtomicReference<Vibrator> vibratorRef =
 		new AtomicReference<Vibrator>();
 	
-	public BouncingBallModel(int ballRadius) {
+	public BouncingBallModel(int ballRadius, PlateauModel plateauModel) {
 		this.ballRadius = ballRadius;
+        this.plateauModel = plateauModel;
 	}
 	
 	public void setAccel(float ax, float ay) {
@@ -139,6 +143,7 @@ public class BouncingBallModel {
             lVy = -lVy * rebound;
             bouncedY = true;
         }
+
         if (bouncedY && Math.abs(lVy) < STOP_BOUNCING_VELOCITY) {
             lVy = 0;  
             bouncedY = false;
@@ -157,7 +162,18 @@ public class BouncingBallModel {
         	lVx = 0;
         	bouncedX = false;
         }
-        
+
+        Log.e("Pos", "lBallX = " + lBallX + " lBallY= " + lBallY);
+        /*if(this.plateauModel.isAMur((int)lBallX/50,(int)lBallY/50)) {
+            lBallY = lBallY - ballRadius;
+            lVy = -lVy * rebound;
+            bouncedY = true;
+
+            lBallX = lBallX - ballRadius;
+            lVx = -lVx * rebound;
+            bouncedX = true;
+        }*/
+
 
         // safely copy local vars back to object fields
         synchronized (LOCK) {
