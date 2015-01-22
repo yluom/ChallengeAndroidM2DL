@@ -28,6 +28,6 @@ public class PlateauModel {
         if(i < 38 && j < 21) {
             return this.plateau[i][j] == EnumSurfaceType.MUR;
         }
-        return true;
+        return false;
     }
 }

@@ -31,7 +31,7 @@ import android.widget.ToggleButton;
  * the edge, it bounces back and triggers the phone vibrator.
  */
 public class BouncingBallActivity extends Activity implements View.OnTouchListener,CompoundButton.OnCheckedChangeListener, Callback, SensorListener {
-	private static final int BALL_RADIUS = 20;
+	private static final int BALL_RADIUS = 30;
 	private SurfaceView surface;
 	private SurfaceHolder holder;
 	private BouncingBallModel model;

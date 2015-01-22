@@ -38,11 +38,11 @@ public class BouncingBallModel {
      * A value of 1.0 means the ball bounces with 100% efficiency. Lower
      * numbers simulate balls that don't bounce very much.
      */
-    private static final float rebound = 0.4f;
+    private static final float rebound = 0.8f;
 
     // if the ball bounces and the velocity is less than this constant,
     // stop bouncing.
-    private static final float STOP_BOUNCING_VELOCITY = 1f;
+    private static final float STOP_BOUNCING_VELOCITY = 2f;
 
     private volatile long lastTimeMs = -1;
 	
@@ -142,7 +142,21 @@ public class BouncingBallModel {
             lBallY = lHeight - ballRadius;
             lVy = -lVy * rebound;
             bouncedY = true;
+        } else if (this.plateauModel.isAMur((int)lBallX/50,(int) (lBallY - ballRadius)/50)){
+
+            //lBallY = (ballRadius/2) + lBallY;
+            lBallY = lBallY + 1;
+            Log.e("E","1 lBallY =" + lBallY);
+            lVy = -lVy * rebound;
+            bouncedY = true;
+        } else if(this.plateauModel.isAMur((int)lBallX/50,(int) (lBallY + ballRadius)/50)){
+            //lBallY = lBallY - (ballRadius/2);
+            lBallY = lBallY - 1;
+            Log.e("E","2 lBallY =" + lBallY);
+            lVy = -lVy * rebound;
+            bouncedY = true;
         }
+
 
         if (bouncedY && Math.abs(lVy) < STOP_BOUNCING_VELOCITY) {
             lVy = 0;  
@@ -157,23 +171,24 @@ public class BouncingBallModel {
             lBallX = lWidth - ballRadius;
             lVx = -lVx * rebound;
             bouncedX = true;
+        } else if (this.plateauModel.isAMur((int) (lBallX - ballRadius)/50,(int)lBallY/50)){
+            //lBallX = (ballRadius/2) + lBallX;
+            lBallX = lBallX + 1;
+            Log.e("E","3 lBallX =" + lBallX);
+            lVx = -lVx * rebound;
+            bouncedX = true;
+        } else if(this.plateauModel.isAMur((int) (lBallX + ballRadius)/50,(int)lBallY/50)){
+            //lBallX = lBallX - ballRadius;
+            lBallX = lBallX - 1;
+            Log.e("E","4 lBallX =" + lBallX);
+            lVx = -lVx * (ballRadius/2);
+            bouncedX = true;
         }
+
         if (bouncedX && Math.abs(lVx) < STOP_BOUNCING_VELOCITY) {
         	lVx = 0;
         	bouncedX = false;
         }
-
-        Log.e("Pos", "lBallX = " + lBallX + " lBallY= " + lBallY);
-        /*if(this.plateauModel.isAMur((int)lBallX/50,(int)lBallY/50)) {
-            lBallY = lBallY - ballRadius;
-            lVy = -lVy * rebound;
-            bouncedY = true;
-
-            lBallX = lBallX - ballRadius;
-            lVx = -lVx * rebound;
-            bouncedX = true;
-        }*/
-
 
         // safely copy local vars back to object fields
         synchronized (LOCK) {
