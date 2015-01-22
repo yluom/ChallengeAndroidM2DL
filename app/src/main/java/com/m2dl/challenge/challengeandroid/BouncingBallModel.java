@@ -92,7 +92,6 @@ public class BouncingBallModel {
 
     public void setBallPositionAndVelocity(int ballX, int ballY, int vX, int vY) {
         synchronized (LOCK) {
-            Log.e("setBallPositionAndVelocity", "setBallPositionAndVelocity");
             this.ballPixelX = ballX;
             this.ballPixelY = ballY;
             velocityX = vX;
@@ -118,7 +117,6 @@ public class BouncingBallModel {
             lAx = accelX;
             lAy = -accelY;
         }
-
 
         if (lWidth <= 0 || lHeight <= 0) {
             // invalid width and height, nothing to do until the GUI comes up
@@ -158,20 +156,14 @@ public class BouncingBallModel {
             lVy = -lVy * rebound;
             bouncedY = true;
         } else if (this.plateauModel.isAMur((int)lBallX/50,(int) (lBallY - ballRadius)/50)){
-
-            //lBallY = (ballRadius/2) + lBallY;
             lBallY = lBallY + 1;
-            Log.e("E","1 lBallY =" + lBallY);
             lVy = -lVy * rebound;
             bouncedY = true;
         } else if(this.plateauModel.isAMur((int)lBallX/50,(int) (lBallY + ballRadius)/50)){
-            //lBallY = lBallY - (ballRadius/2);
             lBallY = lBallY - 1;
-            Log.e("E","2 lBallY =" + lBallY);
             lVy = -lVy * rebound;
             bouncedY = true;
         }
-
 
         if (bouncedY && Math.abs(lVy) < STOP_BOUNCING_VELOCITY) {
             lVy = 0;  
@@ -187,15 +179,11 @@ public class BouncingBallModel {
             lVx = -lVx * rebound;
             bouncedX = true;
         } else if (this.plateauModel.isAMur((int) (lBallX - ballRadius)/50,(int)lBallY/50)){
-            //lBallX = (ballRadius/2) + lBallX;
             lBallX = lBallX + 1;
-            Log.e("E","3 lBallX =" + lBallX);
             lVx = -lVx * rebound;
             bouncedX = true;
         } else if(this.plateauModel.isAMur((int) (lBallX + ballRadius)/50,(int)lBallY/50)){
-            //lBallX = lBallX - ballRadius;
             lBallX = lBallX - 1;
-            Log.e("E","4 lBallX =" + lBallX);
             lVx = -lVx * rebound;
             bouncedX = true;
         }
@@ -212,13 +200,6 @@ public class BouncingBallModel {
             
             velocityX = lVx;
             velocityY = lVy;
-        }
-        
-        if (bouncedX || bouncedY) {
-        	Vibrator v = vibratorRef.get();
-        	if (v != null) {
-        		v.vibrate(20L);
-        	}
         }
     }
     

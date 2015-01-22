@@ -1,5 +1,8 @@
 package com.m2dl.challenge.challengeandroid;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * Created by T430 on 22/01/2015.
  */
@@ -9,6 +12,8 @@ public class OldPosition {
     private float y;
     private float vX;
     private float vY;
+    private Timestamp time;
+
 
 
     public OldPosition(float x, float y, float vX, float vY) {
