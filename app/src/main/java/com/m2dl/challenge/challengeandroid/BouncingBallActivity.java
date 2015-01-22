@@ -263,7 +263,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 
             if (lastUpdate == -1 || (actualTime - lastUpdate) > 50) {
                 lastUpdate = actualTime;
-                model.setAccel(-x, -y);
+                model.setAccel(y, -x);
             }
 
         }
