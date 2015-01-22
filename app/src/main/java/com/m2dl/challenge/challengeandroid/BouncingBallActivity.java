@@ -22,6 +22,7 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
@@ -45,8 +46,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     private PlateauModel plateauModel;
     private EnumSurfaceType etat;
     private ToggleButton outil;
-    private float oldX, oldY;
-    private int cptOldposition = 0;
+    private CircularQueue oldPositions;
 
 
 	@Override
@@ -82,6 +82,9 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         this.outil.setOnCheckedChangeListener(this);
 
         this.model  = new BouncingBallModel(BALL_RADIUS,this.plateauModel);
+
+
+        this.oldPositions = new CircularQueue(200);
     }
     
 	@Override
@@ -203,6 +206,8 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 				try {
 					// TODO don't like this hardcoding
 					TimeUnit.MILLISECONDS.sleep(5);
+                    oldPositions.push(new OldPosition(model.ballPixelX, model.ballPixelY, model.velocityX, model.velocityY));
+
 					draw();
 					model.updatePhysics();
 
@@ -240,6 +245,13 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     }
 
     public void replayBall(View v) {
+
+        // get 1s ago position
+        OldPosition pos = this.oldPositions.getLastInsertedElement();
+        Log.e("REPLAYING BALL", "BALL REPLAY, oldPos = " + pos.toString());
+        model.setBallPositionAndVelocity((int) pos.getX(), (int) pos.getY(), (int) pos.getvX(), (int) pos.getvY());
+        Log.e("REPLAYING BALL", "pos is now : " + model.ballPixelX + " / " + model.ballPixelY + " / " + model.velocityX + " / "+ model.velocityY);
+
 
     }
 }

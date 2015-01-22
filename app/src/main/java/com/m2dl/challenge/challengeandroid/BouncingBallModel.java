@@ -27,7 +27,7 @@ public class BouncingBallModel {
 	private int pixelWidth, pixelHeight;
 	
 	// values are in meters/second
-	private float velocityX, velocityY;
+	public float velocityX, velocityY;
 	
 	// typical values range from -10...10, but could be higher or lower if
 	// the user moves the phone rapidly
@@ -87,6 +87,21 @@ public class BouncingBallModel {
             this.ballPixelY = ballY;
             velocityX = 0;
             velocityY = 0;
+        }
+    }
+
+    public void setBallPositionAndVelocity(int ballX, int ballY, int vX, int vY) {
+        synchronized (LOCK) {
+            Log.e("setBallPositionAndVelocity", "setBallPositionAndVelocity");
+            this.ballPixelX = ballX;
+            this.ballPixelY = ballY;
+            velocityX = vX;
+            velocityY = vY;
+        }
+
+        Vibrator v = vibratorRef.get();
+        if (v != null) {
+            v.vibrate(20L);
         }
     }
     

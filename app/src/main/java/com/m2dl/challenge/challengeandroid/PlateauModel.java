@@ -6,7 +6,7 @@ package com.m2dl.challenge.challengeandroid;
 public class PlateauModel {
     private EnumSurfaceType[][] plateau;
 
-    public PlateauModel(){
+    public PlateauModel() {
         this.plateau = new EnumSurfaceType[38][21];
         for (int i = 0; i < 38; i++) {
             for (int j = 0; j < 21; j++) {
