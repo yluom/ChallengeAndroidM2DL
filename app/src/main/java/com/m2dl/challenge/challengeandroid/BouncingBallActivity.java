@@ -39,7 +39,7 @@ import android.widget.ToggleButton;
  * the edge, it bounces back and triggers the phone vibrator.
  */
 public class BouncingBallActivity extends Activity implements View.OnTouchListener, Callback, SensorEventListener {
-    private static final int BALL_RADIUS = 30;
+    private static final int BALL_RADIUS = 30; // todo modify
     private SurfaceView surface;
     private SurfaceHolder holder;
     private BouncingBallModel model;
@@ -57,6 +57,8 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     private ImageButton btnSurfaceType;
     private Bitmap imgWall;
     private long lastUpdate;
+
+    private Bitmap ballIcon;
 
 
     @Override
@@ -96,8 +98,14 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         this.model  = new BouncingBallModel(BALL_RADIUS,this.plateauModel);
 
         this.oldPositions = new CircularQueue(60);
+        
         imgWall = BitmapFactory.decodeResource(getResources(), R.drawable.brique);
         imgWall = Bitmap.createScaledBitmap(imgWall, 50, 50, false);
+
+        ballIcon = BitmapFactory.decodeResource(getResources(),
+                R.drawable.ball);
+        ballIcon = Bitmap.createScaledBitmap(ballIcon, 60, 60, false);
+        ballIcon = makeTransparent(ballIcon);
     }
 
     @Override
@@ -170,7 +178,12 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
             ballY = model.ballPixelY;
         }
 
-        c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
+        // Remplacer ça
+       // c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
+
+        //
+        c.drawBitmap(ballIcon, ballX-(BALL_RADIUS), ballY-(BALL_RADIUS), null);
+
 
         for (int i = 0; i < 38; i++){
             for(int j = 0; j < 21; j++){
@@ -267,8 +280,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
             }
 
         }
-
-
     }
 
     @Override
@@ -286,5 +297,24 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         // get 1s ago position
         OldPosition pos = this.oldPositions.getLastInsertedElement();
         model.setBallPositionAndVelocity((int) pos.getX(), (int) pos.getY(), (int) pos.getvX(), (int) pos.getvY());
+    }
+
+    // Convert red to transparent in a bitmap
+    public static Bitmap makeTransparent(Bitmap bit) {
+        int width =  bit.getWidth();
+        int height = bit.getHeight();
+        Bitmap myBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        int [] allpixels = new int [ myBitmap.getHeight()*myBitmap.getWidth()];
+        bit.getPixels(allpixels, 0, myBitmap.getWidth(), 0, 0, myBitmap.getWidth(),myBitmap.getHeight());
+        myBitmap.setPixels(allpixels, 0, width, 0, 0, width, height);
+
+        for(int i =0; i<myBitmap.getHeight()*myBitmap.getWidth();i++){
+            if( allpixels[i] == Color.WHITE)
+                allpixels[i] = Color.alpha(Color.TRANSPARENT);
+        }
+
+        myBitmap.setPixels(allpixels, 0, myBitmap.getWidth(), 0, 0, myBitmap.getWidth(), myBitmap.getHeight());
+        Log.d("Supports alpha?", myBitmap.hasAlpha() + "");
+        return myBitmap;
     }
 }
