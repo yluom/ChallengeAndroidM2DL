@@ -19,15 +19,23 @@ public class PlateauModel {
         // TODO gerer les limites (bords)
         x = x / 50;
         y = y /50;
-        if(x < 38 && y < 21){
+        if(x < 38 && y < 21 && x > 0 && y > 0){
             this.plateau[x][y] = surface;
         }
     }
 
     public boolean isAMur(int i, int j) {
-        if(i < 38 && j < 21) {
+        if(i < 38 && j < 21 && i > 0 && j > 0) {
             return this.plateau[i][j] == EnumSurfaceType.MUR;
         }
         return false;
+    }
+
+    public void cleanPlateau(){
+        for (int i = 0; i < 38; i++) {
+            for (int j = 0; j < 21; j++) {
+                this.plateau[i][j] = EnumSurfaceType.VIDE;
+            }
+        }
     }
 }

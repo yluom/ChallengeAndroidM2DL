@@ -181,7 +181,7 @@ public class BouncingBallModel {
             //lBallX = lBallX - ballRadius;
             lBallX = lBallX - 1;
             Log.e("E","4 lBallX =" + lBallX);
-            lVx = -lVx * (ballRadius/2);
+            lVx = -lVx * rebound;
             bouncedX = true;
         }
 

@@ -236,7 +236,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 
 
     public void cleanPlateau(View v){
-        this.plateauModel = new PlateauModel();
+        this.plateauModel.cleanPlateau();
     }
 
     public void replayBall(View v) {
