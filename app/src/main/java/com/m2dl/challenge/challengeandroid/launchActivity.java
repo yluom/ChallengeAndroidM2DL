@@ -50,5 +50,6 @@ public class launchActivity extends Activity {
     public void launch(View v){
         Intent intent = new Intent(this, BouncingBallActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }
