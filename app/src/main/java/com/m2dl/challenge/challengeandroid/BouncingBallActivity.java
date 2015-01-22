@@ -45,6 +45,8 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     private PlateauModel plateauModel;
     private EnumSurfaceType etat;
     private ToggleButton outil;
+    private float oldX, oldY;
+    private int cptOldposition = 0;
 
 
 	@Override
@@ -201,7 +203,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 				try {
 					// TODO don't like this hardcoding
 					TimeUnit.MILLISECONDS.sleep(5);
-					
 					draw();
 					model.updatePhysics();
 
@@ -232,4 +233,13 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 			}
 		}
 	}
+
+
+    public void cleanPlateau(View v){
+        this.plateauModel = new PlateauModel();
+    }
+
+    public void replayBall(View v) {
+
+    }
 }

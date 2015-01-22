@@ -26,6 +26,34 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clean"
+            android:id="@+id/btnClean"
+            android:layout_below="@+id/toggleButtonOutil"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignLeft="@+id/toggleButtonOutil"
+            android:layout_alignStart="@+id/toggleButtonOutil"
+            android:onClick="cleanPlateau"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Replay"
+            android:id="@+id/btnReplay"
+            android:layout_below="@+id/btnClean"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignLeft="@+id/btnClean"
+            android:layout_alignStart="@+id/btnClean"
+            android:onClick="replayBall"/>
+
+
     </RelativeLayout>
 
 </LinearLayout>

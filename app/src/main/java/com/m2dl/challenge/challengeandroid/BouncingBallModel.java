@@ -210,4 +210,5 @@ public class BouncingBallModel {
     public void setVibrator(Vibrator v) {
     	vibratorRef.set(v);
     }
+
 }
