@@ -13,7 +13,7 @@ public class BouncingBallModel {
 	// the ball speed is meters / second. When we draw to the screen,
 	// 1 pixel represents 1 meter. That ends up too slow, so multiply
 	// by this number. Bigger numbers speeds things up.
-	private final float pixelsPerMeter = 10;
+	private final float pixelsPerMeter = 20;
 	
 	private final int ballRadius;
 	
@@ -38,11 +38,11 @@ public class BouncingBallModel {
      * A value of 1.0 means the ball bounces with 100% efficiency. Lower
      * numbers simulate balls that don't bounce very much.
      */
-    private static final float rebound = 0.8f;
+    private static final float rebound = 0.6f;
 
     // if the ball bounces and the velocity is less than this constant,
     // stop bouncing.
-    private static final float STOP_BOUNCING_VELOCITY = 2f;
+    private static final float STOP_BOUNCING_VELOCITY = 1.5f;
 
     private volatile long lastTimeMs = -1;
 	

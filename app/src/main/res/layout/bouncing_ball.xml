@@ -16,42 +16,52 @@
         android:id="@+id/bouncing_ball_surface"
         />
 
-        <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButtonOutil"
-            android:textOn="Gomme"
-            android:textOff="Mur"
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/delete"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:alpha="0.8"
+            android:id="@+id/btnSurfaceType"
+            android:onClick="btnSurfaceChange"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp" />
 
-        <Button
+        <ImageButton
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:text="Clean"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:alpha="0.8"
             android:id="@+id/btnClean"
-            android:layout_below="@+id/toggleButtonOutil"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignLeft="@+id/toggleButtonOutil"
-            android:layout_alignStart="@+id/toggleButtonOutil"
-            android:onClick="cleanPlateau"/>
+            android:onClick="cleanPlateau"
+            android:src="@drawable/clean"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/btnReplay"
+            android:layout_alignStart="@+id/btnReplay"
+            android:layout_marginBottom="20dp" />
 
-        <Button
+        <ImageButton
             style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:alpha="0.8"
             android:text="Replay"
+            android:src="@drawable/clock"
             android:id="@+id/btnReplay"
-            android:layout_below="@+id/btnClean"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignLeft="@+id/btnClean"
-            android:layout_alignStart="@+id/btnClean"
-            android:onClick="replayBall"/>
+            android:onClick="replayBall"
+            android:layout_below="@+id/btnSurfaceType"
+            android:layout_alignLeft="@+id/btnSurfaceType"
+            android:layout_alignStart="@+id/btnSurfaceType"
+            android:layout_marginTop="20dp" />
 
 
     </RelativeLayout>
