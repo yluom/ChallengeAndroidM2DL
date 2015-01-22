@@ -8,6 +8,8 @@ import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -162,13 +164,15 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 		}
 		c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
 
+        Bitmap imgWall = BitmapFactory.decodeResource(getResources(), R.drawable.brique);
+        imgWall = Bitmap.createScaledBitmap(imgWall, 50, 50, false);
         for (int i = 0; i < 38; i++){
             for(int j = 0; j < 21; j++){
                 if(this.plateauModel.isAMur(i, j)){
                     int pixelX = i*50;
                     int pixelY = j*50;
-                    c.drawRect(pixelX,pixelY,pixelX+50,pixelY+50, wallPaint);
-                    //Log.e("Drawing", "Rectpix = " + pixelX +" / " +pixelY);
+                    //c.drawRect(pixelX,pixelY,pixelX+50,pixelY+50, wallPaint);
+                    c.drawBitmap(imgWall,pixelX,pixelY,wallPaint);
                 }
             }
         }
