@@ -21,6 +21,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
 import android.view.View;
+import android.widget.LinearLayout;
 
 /**
  * This activity shows a ball that bounces around. The phone's 
@@ -51,7 +52,9 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     	holder = surface.getHolder();
     	surface.getHolder().addCallback(this);
 
-        surface.setOnTouchListener(this);
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.bouncing_ball);
+        ll.setOnTouchListener(this);
     	
     	backgroundPaint = new Paint();
 		backgroundPaint.setColor(Color.WHITE);
@@ -166,7 +169,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     public boolean onTouch(View v, MotionEvent event) {
         this.plateauModel.setSurface((int) event.getX(), (int) event.getY(), EnumSurfaceType.MUR);
         Log.e("TOuch ! ", " x = + " + (int) event.getX() + " y = " + (int) event.getY());
-        return false;
+        return true;
     }
 
     private class GameLoop extends Thread {
