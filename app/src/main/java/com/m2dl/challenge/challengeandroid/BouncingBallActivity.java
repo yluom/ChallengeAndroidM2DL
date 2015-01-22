@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
@@ -32,7 +34,7 @@ import android.widget.ToggleButton;
  * accelerometer acts as gravity on the ball. When the ball hits
  * the edge, it bounces back and triggers the phone vibrator.
  */
-public class BouncingBallActivity extends Activity implements View.OnTouchListener,CompoundButton.OnCheckedChangeListener, Callback, SensorListener {
+public class BouncingBallActivity extends Activity implements View.OnTouchListener, Callback, SensorListener {
 	private static final int BALL_RADIUS = 30;
 	private SurfaceView surface;
 	private SurfaceHolder holder;
@@ -46,9 +48,11 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 
     private PlateauModel plateauModel;
     private EnumSurfaceType etat;
-    private ToggleButton outil;
+    private ImageButton outil;
+    private ImageButton btnSurfaceType;
     private float oldX, oldY;
     private int cptOldposition = 0;
+    private Bitmap imgWall;
 
 
 	@Override
@@ -64,6 +68,10 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 
         LinearLayout ll = (LinearLayout) findViewById(R.id.bouncing_ball);
         ll.setOnTouchListener(this);
+
+        this.btnSurfaceType = (ImageButton) findViewById(R.id.btnSurfaceType);
+
+
     	
     	backgroundPaint = new Paint();
 		backgroundPaint.setColor(Color.WHITE);
@@ -79,11 +87,12 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         this.plateauModel = new PlateauModel();
         this.etat = EnumSurfaceType.MUR;
 
-        this.outil = (ToggleButton) findViewById(R.id.toggleButtonOutil);
-
-        this.outil.setOnCheckedChangeListener(this);
+        this.outil = (ImageButton) findViewById(R.id.btnSurfaceType);
 
         this.model  = new BouncingBallModel(BALL_RADIUS,this.plateauModel);
+
+        imgWall = BitmapFactory.decodeResource(getResources(), R.drawable.brique);
+        imgWall = Bitmap.createScaledBitmap(imgWall, 50, 50, false);
     }
     
 	@Override
@@ -150,7 +159,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 			}
 		}
 	}
-	
+
 	private void doDraw(Canvas c) {
 		int width = c.getWidth();
 		int height = c.getHeight();
@@ -164,8 +173,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 		}
 		c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
 
-        Bitmap imgWall = BitmapFactory.decodeResource(getResources(), R.drawable.brique);
-        imgWall = Bitmap.createScaledBitmap(imgWall, 50, 50, false);
+
         for (int i = 0; i < 38; i++){
             for(int j = 0; j < 21; j++){
                 if(this.plateauModel.isAMur(i, j)){
@@ -194,9 +202,14 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         return true;
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        this.etat = (isChecked) ? EnumSurfaceType.VIDE : EnumSurfaceType.MUR;
+    public void btnSurfaceChange(View v) {
+        if(EnumSurfaceType.MUR == this.etat){
+            this.etat = EnumSurfaceType.VIDE;
+            btnSurfaceType.setImageDrawable(getResources().getDrawable(R.drawable.pen));
+        } else if(EnumSurfaceType.VIDE == this.etat){
+            this.etat = EnumSurfaceType.MUR;
+            btnSurfaceType.setImageDrawable(getResources().getDrawable(R.drawable.delete));
+        }
     }
 
     private class GameLoop extends Thread {

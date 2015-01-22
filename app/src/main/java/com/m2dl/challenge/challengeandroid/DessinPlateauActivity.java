@@ -65,6 +65,7 @@ public class DessinPlateauActivity extends Activity implements View.OnTouchListe
 
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.WHITE);
+
     }
 
     @Override
