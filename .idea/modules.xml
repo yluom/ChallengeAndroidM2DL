@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ChallengeAndroid.iml" filepath="$PROJECT_DIR$/ChallengeAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ChallengeAndroidM2DL.iml" filepath="$PROJECT_DIR$/ChallengeAndroidM2DL.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
