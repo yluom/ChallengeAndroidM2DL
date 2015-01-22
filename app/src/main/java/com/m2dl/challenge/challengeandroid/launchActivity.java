@@ -11,14 +11,12 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class launchActivity extends Activity {
+public class LaunchActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-
-
         Typeface myTypeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
         TextView myTextView = (TextView)findViewById(R.id.nameLab);
         myTextView.setTypeface(myTypeface);

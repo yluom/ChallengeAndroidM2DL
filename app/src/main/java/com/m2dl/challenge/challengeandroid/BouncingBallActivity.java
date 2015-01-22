@@ -1,37 +1,27 @@
 package com.m2dl.challenge.challengeandroid;
 
-import static android.hardware.SensorManager.*;
-
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
+import android.view.SurfaceView;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-import android.widget.ToggleButton;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * This activity shows a ball that bounces around. The phone's 
@@ -64,21 +54,23 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.bouncing_ball);
 
+        // Sensor accelerometre
         sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         lastUpdate = System.currentTimeMillis();
 
+        // Récupération des éléments graphiques
         surface = (SurfaceView) findViewById(R.id.bouncing_ball_surface);
+        LinearLayout ll = (LinearLayout) findViewById(R.id.bouncing_ball);
+        this.btnSurfaceType = (ImageButton) findViewById(R.id.btnSurfaceType);
+        this.outil = (ImageButton) findViewById(R.id.btnSurfaceType);
+
+
         holder = surface.getHolder();
         surface.getHolder().addCallback(this);
 
-
-        LinearLayout ll = (LinearLayout) findViewById(R.id.bouncing_ball);
         ll.setOnTouchListener(this);
-
-        this.btnSurfaceType = (ImageButton) findViewById(R.id.btnSurfaceType);
 
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.WHITE);
@@ -93,17 +85,14 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         this.plateauModel = new PlateauModel();
         this.etat = EnumSurfaceType.MUR;
 
-        this.outil = (ImageButton) findViewById(R.id.btnSurfaceType);
-
         this.model  = new BouncingBallModel(BALL_RADIUS,this.plateauModel);
 
         this.oldPositions = new CircularQueue(60);
-        
+
         imgWall = BitmapFactory.decodeResource(getResources(), R.drawable.brique);
         imgWall = Bitmap.createScaledBitmap(imgWall, 50, 50, false);
 
-        ballIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ball);
+        ballIcon = BitmapFactory.decodeResource(getResources(),R.drawable.ball);
         ballIcon = Bitmap.createScaledBitmap(ballIcon, 60, 60, false);
         ballIcon = makeTransparent(ballIcon);
     }
@@ -178,12 +167,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
             ballY = model.ballPixelY;
         }
 
-        // Remplacer ça
-       // c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
-
-        //
         c.drawBitmap(ballIcon, ballX-(BALL_RADIUS), ballY-(BALL_RADIUS), null);
-
 
         for (int i = 0; i < 38; i++){
             for(int j = 0; j < 21; j++){
@@ -293,7 +277,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     }
 
     public void replayBall(View v) {
-
         // get 1s ago position
         OldPosition pos = this.oldPositions.getLastInsertedElement();
         model.setBallPositionAndVelocity((int) pos.getX(), (int) pos.getY(), (int) pos.getvX(), (int) pos.getvY());
@@ -308,13 +291,12 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         bit.getPixels(allpixels, 0, myBitmap.getWidth(), 0, 0, myBitmap.getWidth(),myBitmap.getHeight());
         myBitmap.setPixels(allpixels, 0, width, 0, 0, width, height);
 
-        for(int i =0; i<myBitmap.getHeight()*myBitmap.getWidth();i++){
+        for(int i = 0; i< myBitmap.getHeight()*myBitmap.getWidth(); i++){
             if( allpixels[i] == Color.WHITE)
                 allpixels[i] = Color.alpha(Color.TRANSPARENT);
         }
 
         myBitmap.setPixels(allpixels, 0, myBitmap.getWidth(), 0, 0, myBitmap.getWidth(), myBitmap.getHeight());
-        Log.d("Supports alpha?", myBitmap.hasAlpha() + "");
         return myBitmap;
     }
 }
