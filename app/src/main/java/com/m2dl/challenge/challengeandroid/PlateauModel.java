@@ -7,9 +7,9 @@ public class PlateauModel {
     private EnumSurfaceType[][] plateau;
 
     public PlateauModel(){
-        this.plateau = new EnumSurfaceType[1920][1054];
-        for (int i = 0; i < 1920; i++) {
-            for (int j = 0; j < 1054; j++) {
+        this.plateau = new EnumSurfaceType[38][21];
+        for (int i = 0; i < 38; i++) {
+            for (int j = 0; j < 21; j++) {
                 this.plateau[i][j] = EnumSurfaceType.VIDE;
             }
         }
@@ -17,13 +17,9 @@ public class PlateauModel {
 
     public void setSurface(int x, int y, EnumSurfaceType surface){
         // TODO gerer les limites (bords)
-        x = x + 4;
-        y = y - 4;
-        for (int i = x; i < x + 5; i++) {
-            for (int j = y; j < y + 5; j++) {
-                this.plateau[i][j] = surface;
-            }
-        }
+        x = x / 50;
+        y = y /50;
+        this.plateau[x][y] = surface;
     }
 
     public boolean isAMur(int i, int j) {

@@ -19,6 +19,26 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
+import static android.hardware.SensorManager.DATA_X;
+import static android.hardware.SensorManager.DATA_Y;
+import static android.hardware.SensorManager.SENSOR_ACCELEROMETER;
+import static android.hardware.SensorManager.SENSOR_DELAY_GAME;
+
+import java.util.concurrent.TimeUnit;
+
+import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.os.Vibrator;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.SurfaceHolder.Callback;
+
+
 public class DessinPlateauActivity extends Activity implements View.OnTouchListener , SurfaceHolder.Callback {
 
     private PlateauModel plateauModel;
@@ -72,16 +92,20 @@ public class DessinPlateauActivity extends Activity implements View.OnTouchListe
     private void doDraw(Canvas c) {
         int width = c.getWidth();
         int height = c.getHeight();
-        c.drawRect(0, 0, width, height, backgroundPaint);
+        //c.drawRect(0, 0, width, height, backgroundPaint);
 
         Paint p = new Paint();
         p.setColor(Color.BLACK);
+        p.setAntiAlias(true);
+        Log.e("ih","Dessin rect");
+        c.drawRect(new Rect(200,200,400,400), p);
+
 
         for (int i = 0; i < 1920; i++){
             for(int j = 0; j < 1054; j++){
                 if(this.plateauModel.isAMur(i, j)){
                     Log.e("Mur", "Mur rencontré à  " + i + " " + j);
-                    c.drawRect(new Rect(200,200,400,400), p);
+
                 }
             }
         }

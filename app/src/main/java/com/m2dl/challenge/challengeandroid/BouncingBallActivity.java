@@ -15,16 +15,19 @@ import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.SurfaceHolder.Callback;
+import android.view.View;
 
 /**
  * This activity shows a ball that bounces around. The phone's 
  * accelerometer acts as gravity on the ball. When the ball hits
  * the edge, it bounces back and triggers the phone vibrator.
  */
-public class BouncingBallActivity extends Activity implements Callback, SensorListener {
+public class BouncingBallActivity extends Activity implements View.OnTouchListener, Callback, SensorListener {
 	private static final int BALL_RADIUS = 20;
 	private SurfaceView surface;
 	private SurfaceHolder holder;
@@ -34,6 +37,8 @@ public class BouncingBallActivity extends Activity implements Callback, SensorLi
 	private Paint ballPaint;
 	private SensorManager sensorMgr;
 	private long lastSensorUpdate = -1;
+
+    private PlateauModel plateauModel;
 
 
 	@Override
@@ -45,6 +50,8 @@ public class BouncingBallActivity extends Activity implements Callback, SensorLi
     	surface = (SurfaceView) findViewById(R.id.bouncing_ball_surface);
     	holder = surface.getHolder();
     	surface.getHolder().addCallback(this);
+
+        surface.setOnTouchListener(this);
     	
     	backgroundPaint = new Paint();
 		backgroundPaint.setColor(Color.WHITE);
@@ -52,6 +59,8 @@ public class BouncingBallActivity extends Activity implements Callback, SensorLi
 		ballPaint = new Paint();
 		ballPaint.setColor(Color.BLUE);
 		ballPaint.setAntiAlias(true);
+
+        this.plateauModel = new PlateauModel();
     }
     
 	@Override
@@ -131,6 +140,17 @@ public class BouncingBallActivity extends Activity implements Callback, SensorLi
 			
 		}
 		c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
+
+        for (int i = 0; i < 38; i++){
+            for(int j = 0; j < 21; j++){
+                if(this.plateauModel.isAMur(i, j)){
+                    int pixelX = i*50;
+                    int pixelY = j*50;
+                    c.drawRect(pixelX,pixelY,pixelX+50,pixelY+50, ballPaint);
+                    //Log.e("Drawing", "Rectpix = " + pixelX +" / " +pixelY);
+                }
+            }
+        }
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -141,8 +161,15 @@ public class BouncingBallActivity extends Activity implements Callback, SensorLi
 			gameLoop = null;
 		}
 	}
-    
-	private class GameLoop extends Thread {
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        this.plateauModel.setSurface((int) event.getX(), (int) event.getY(), EnumSurfaceType.MUR);
+        Log.e("TOuch ! ", " x = + " + (int) event.getX() + " y = " + (int) event.getY());
+        return false;
+    }
+
+    private class GameLoop extends Thread {
 		private volatile boolean running = true;
 		
 		public void run() {
