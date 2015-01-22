@@ -55,8 +55,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     private CircularQueue oldPositions;
     private ImageButton outil;
     private ImageButton btnSurfaceType;
-    private float oldX, oldY;
-    private int cptOldposition = 0;
     private Bitmap imgWall;
     private long lastUpdate;
 
@@ -89,7 +87,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 
         wallPaint = new Paint();
         wallPaint.setColor(Color.RED);
-
 
         this.plateauModel = new PlateauModel();
         this.etat = EnumSurfaceType.MUR;
@@ -174,7 +171,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         }
 
         c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
-
 
         for (int i = 0; i < 38; i++){
             for(int j = 0; j < 21; j++){
