@@ -18,6 +18,6 @@ public class CircularQueue {
     }
 
     public OldPosition getLastInsertedElement() {
-        return data[(nextIndex+1) % data.length];
+        return data[(nextIndex) % data.length];
     }
 }

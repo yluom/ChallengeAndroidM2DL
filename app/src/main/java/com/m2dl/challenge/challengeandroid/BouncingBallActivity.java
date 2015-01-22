@@ -48,7 +48,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     private PlateauModel plateauModel;
     private EnumSurfaceType etat;
     private ToggleButton outil;
-    private CircularQueue oldPositions;
+    //private CircularQueue oldPositions;
 
 
 	@Override
@@ -86,7 +86,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
         this.model  = new BouncingBallModel(BALL_RADIUS,this.plateauModel);
 
 
-        this.oldPositions = new CircularQueue(200);
+       // this.oldPositions = new CircularQueue(200);
     }
     
 	@Override
@@ -163,8 +163,8 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 		synchronized (model.LOCK) {
 			ballX = model.ballPixelX;
 			ballY = model.ballPixelY;
-			
 		}
+
 		c.drawCircle(ballX, ballY, BALL_RADIUS, ballPaint);
 
         Bitmap imgWall = BitmapFactory.decodeResource(getResources(), R.drawable.brique);
@@ -193,7 +193,6 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         this.plateauModel.setSurface((int) event.getX(), (int) event.getY(), this.etat);
-        Log.e("TOuch ! ", " x = + " + (int) event.getX() + " y = " + (int) event.getY());
         return true;
     }
 
@@ -210,7 +209,7 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
 				try {
 					// TODO don't like this hardcoding
 					TimeUnit.MILLISECONDS.sleep(5);
-                    oldPositions.push(new OldPosition(model.ballPixelX, model.ballPixelY, model.velocityX, model.velocityY));
+                   // oldPositions.push(new OldPosition(model.ballPixelX, model.ballPixelY, model.velocityX, model.velocityY));
 
 					draw();
 					model.updatePhysics();
@@ -251,11 +250,8 @@ public class BouncingBallActivity extends Activity implements View.OnTouchListen
     public void replayBall(View v) {
 
         // get 1s ago position
-        OldPosition pos = this.oldPositions.getLastInsertedElement();
-        Log.e("REPLAYING BALL", "BALL REPLAY, oldPos = " + pos.toString());
-        model.setBallPositionAndVelocity((int) pos.getX(), (int) pos.getY(), (int) pos.getvX(), (int) pos.getvY());
-        Log.e("REPLAYING BALL", "pos is now : " + model.ballPixelX + " / " + model.ballPixelY + " / " + model.velocityX + " / "+ model.velocityY);
-
+       // OldPosition pos = this.oldPositions.getLastInsertedElement();
+        //model.setBallPositionAndVelocity((int) pos.getX(), (int) pos.getY(), (int) pos.getvX(), (int) pos.getvY());
 
     }
 }
